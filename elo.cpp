@@ -53,7 +53,7 @@ void parseLine(stringstream &s, unordered_map<string, pair<double,int>>& kills, 
   }
 }
 
-void instantiateElo(unordered_map<string, pair<double,int>>& kills) {
+array<double, 2> instantiateElo(unordered_map<string, pair<double,int>>& kills) {
   array<double,2> fin;
   for(auto it: kills) {
     string name = it.first;
@@ -67,7 +67,7 @@ void instantiateElo(unordered_map<string, pair<double,int>>& kills) {
   fin[1] /= 5;
 }
 
-void updateElo(unordered_map<string, pair<double, int>> kills) {
+void updateElo(unordered_map<string, pair<double, int>> kills, array<double, 2> fin) {
   unordered_map<string, double> new_elos;
   for(auto p1: kills) {
       double prev_elo = mp[p1.first];
@@ -80,7 +80,18 @@ void updateElo(unordered_map<string, pair<double, int>> kills) {
               double transSum = elo_one + elo_two;
               double expOne = elo_one / transSum;
               double s_ab = p1_worth > p2_worth ? 1 : p1_worth == p2_worth ? .5 : 0;
-              prev_elo += KFACTOR * (s_ab - expOne);
+              double elow = s_ab >= .5 ? prev_elo : mp[p2.first];
+              double elol = s_ab >= .5 ? mp[p2.first] : prev_elo;
+              double personq = 2.2 / ((elow - elol) * 0.001 + 2.2);
+              double teamq = 2.2 / ((fin[0] - fin[1]) * 0.001 + 2.2);
+              double teammovm = log(abs(p1_worth - p2_worth) + 1) * teamq;
+              double movm = log(abs(p1_worth - p2_worth) + 1) * personq;
+              /* this line weightes only be individual elo for margin of victory*/
+              //prev_elo += KFACTOR * (s_ab - expOne) * movm;
+              //this line weights only team elo_one
+              prev_elo += KFACTOR * (s_ab - expOne) * teammovm;
+              //this line balances the team and individual elo when considering margin of victory
+              //prev_elo += KFACTOR * (s_ab - expOne) * ((teammovm + movm) / 2);
 
 //              double exponent = (mp[p1.first] - mp[p2.first]) / 400;
 //              double e_ab = 1/(1 + pow(10,exponent));
@@ -126,8 +137,8 @@ void updateGame(string winning, string losing) {
 //        cout << it.first << " " << it.second.first << " " << it.second.second << endl;
 //    }
 
-    instantiateElo(kills);
-    updateElo(kills);
+    array<double, 2> fin = instantiateElo(kills);
+    updateElo(kills, fin);
 }
 
 unordered_set<string> get_here() {
