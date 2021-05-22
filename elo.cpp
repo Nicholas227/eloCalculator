@@ -6,11 +6,11 @@
 #include <unordered_set>
 #include <string>
 #include <math.h>
-#include <algorithm>    // std::sort
+#include <algorithm>
 #include<cstdlib>
 #include<ctime>
 
-#define KFACTOR 64
+#define KFACTOR 16
 
 #define ELO_FILE "eloFile.txt"
 #define RESULTS_FILE "results.txt"
@@ -18,6 +18,14 @@
 
 using namespace std;
 unordered_map<string,double> mp;
+/*
+ * Worth = Kills + Assists * 0.333
+ *
+ * newelo = prevElo +
+ *
+ * */
+
+bool tie_game = false;
 
 double calculateElo(double teamOne, double teamTwo, double prevElo, int outcome) {
   double transformedOne = pow(10, teamOne/400);
@@ -27,40 +35,73 @@ double calculateElo(double teamOne, double teamTwo, double prevElo, int outcome)
   double finalElo = prevElo + KFACTOR * (outcome - expOne);
   return finalElo;
 }
-vector<string> parseLine(stringstream &s) {
-  vector<string> vec;
-  string token;
-  while(getline(s, token, ' ')) {
-    vec.push_back(token);
-  }
-  int i = 0;
 
-  return vec;
+void parseLine(stringstream &s, unordered_map<string, pair<double,int>>& kills, int team) {
+
+  string first;
+  getline(s, first, ' ');
+
+  tie_game = first != "Win:" && first != "Loss:" ? true : false;
+
+  string name;
+  string w;
+
+  while(getline(s, name, ' ')) {
+    getline(s, w, ' ');
+    double worth = stod(w);
+    kills[name] = {worth, team};
+  }
 }
 
-array<double, 2> instantiateElo(vector<string> t1, vector<string> t2) {
+void instantiateElo(unordered_map<string, pair<double,int>>& kills) {
   array<double,2> fin;
-  for(int i = 1; i <= 5; i++) {
-    if(mp.find(t1[i]) == mp.end()) {
-        mp[t1[i]] = 1000;
+  for(auto it: kills) {
+    string name = it.first;
+    if(mp.find(name) == mp.end()) {
+        mp[name] = 1000;
     }
-    if(mp.find(t2[i]) == mp.end()) {
-        mp[t2[i]] = 1000;
-    }
-    fin[0] += mp[t1[i]];
-    fin[1] += mp[t2[i]];
+
+    fin[it.second.second] += mp[name];
   }
   fin[0] /= 5;
   fin[1] /= 5;
 }
 
-void updateElo(array<double, 2> teamElos, vector<string> t1, int teamNum) {
-  int outcome = t1[0] == "Loss:" ? 0 : t1[0] == "Win:" ? 1 : .5;
-  //cout << outcome << endl;
-  for(int i = 1; i <= 5; i++) {
-    mp[t1[i]] = calculateElo(teamElos[teamNum], teamElos[teamNum == 1 ? 0 : 1], mp[t1[i]], outcome);
+void updateElo(unordered_map<string, pair<double, int>> kills) {
+  unordered_map<string, double> new_elos;
+  for(auto p1: kills) {
+      double prev_elo = mp[p1.first];
+      double p1_worth = p1.second.first;
+      double elo_one = pow(10, mp[p1.first]/400);
+      for(auto p2: kills) {
+          if(p1.first != p2.first) {
+              double p2_worth = p2.second.first;
+              double elo_two = pow(10, mp[p2.first]/400);
+              double transSum = elo_one + elo_two;
+              double expOne = elo_one / transSum;
+              double s_ab = p1_worth > p2_worth ? 1 : p1_worth == p2_worth ? .5 : 0;
+              prev_elo += KFACTOR * (s_ab - expOne);
+
+//              double exponent = (mp[p1.first] - mp[p2.first]) / 400;
+//              double e_ab = 1/(1 + pow(10,exponent));
+//              //prev_elo += KFACTOR * (s_ab - e_ab);
+          }
+      }
+      new_elos[p1.first] = prev_elo;
+  }
+
+  for(auto it: new_elos) {
+      mp[it.first] = it.second;
   }
 }
+
+/*
+ * double transformedOne = pow(10, teamOne/400);
+  double transformedTwo = pow(10, teamTwo/400);
+  double transSum = transformedOne + transformedTwo;
+  double expOne = transformedOne / transSum;
+  double finalElo = prevElo + KFACTOR * (outcome - expOne);
+ * */
 
 void make_elo_map(ifstream& file) {
     string line;
@@ -77,12 +118,16 @@ void make_elo_map(ifstream& file) {
 void updateGame(string winning, string losing) {
     stringstream win_stream(winning);
     stringstream lose_stream(losing);
-    vector<string> winLine = parseLine(win_stream);
-    vector<string> loseLine = parseLine(lose_stream);
+    unordered_map<string, pair<double, int>> kills;
+    parseLine(win_stream, kills, 1);
+    parseLine(lose_stream, kills, 0);
 
-    array<double, 2> teamElos = instantiateElo(winLine, loseLine);
-    updateElo(teamElos, winLine, 0);
-    updateElo(teamElos, loseLine, 1);
+//    for(auto it: kills) {
+//        cout << it.first << " " << it.second.first << " " << it.second.second << endl;
+//    }
+
+    instantiateElo(kills);
+    updateElo(kills);
 }
 
 unordered_set<string> get_here() {
@@ -108,6 +153,7 @@ int main(int argc, char** argv)
           ifstream elo_file;
           elo_file.open(ELO_FILE);
           make_elo_map(elo_file);
+
           elo_file.close();
 
           ifstream resultsFile;
@@ -117,13 +163,20 @@ int main(int argc, char** argv)
           while(getline(resultsFile, winning)) {
               getline(resultsFile, losing);
               updateGame(winning, losing);
+//              for(auto it: mp) {
+//                  cout << it.first << " " << it.second << endl;
+//              }
           }
+
 
           ofstream output;
 
           output.open(ELO_FILE);
 
+          cout << "here" << endl;
+
           for (auto it: mp) {
+              cout << it.first << " " << it.second << endl;
               string line = it.first + " " + to_string((int)it.second) + "\n";
               output << line;
           }
