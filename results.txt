@@ -1,24 +1,22 @@
-Win: Seifey Gio Mikey Nick Parth
-Loss: Josh Dalton Abhi Darian Diep
-Win: Seifey Abhi Gio Darian Parth
-Loss: Josh Reese Nick Dalton Mikey
-Win: Josh Abhi Gio Darian Diep
-Loss: Seifey Reese Nick Dalton Mikey
-Win: Abhi Seifey Dalton Darian Kyvon
-Loss: Reese Josh Nick Mikey Diep
-Tie1: Abhi Seifey Darian Bryce Gio
-Tie2: Josh Nick Reese Mikey Diep
-Win: Seifey Abhi Gio Nick Darian
-Loss: Reese Josh Diep Mikey Bryce
-Win: Reese Josh Logan Mikey Bryce
-Loss: Seifey Parth Darian Abhi Nick
-Win: Seifey Cole Parth Nick Abhi
-Loss: Josh Reese Bryce Darian Mikey
-Win: Seifey Abhi Nick Parth Cole
-Loss: Josh Reese Darian Mikey Bryce
-Win: Reese Diego Parth Abhi Nick
-Loss: Seifey Josh Diep Cole Dalton
-Win: Seifey Josh Dalton Cole Diep
-Loss: Abhi Reese Nick Parth Diego
-Win: Seifey Josh Dalton Diep Cole
-Loss: Reese Abhi Nick Parth Diego
+Win: Seifey 38.6 Josh 23 Dalton 22.6 Diep 17 Cole 12
+Loss: Reese 20.3 Abhi 19.6 Nick 19.6 Parth 11.3 Diego 5.3
+Win: Seifey 35.3 Josh 31.3 Dalton 21.6 Cole 15.3 Diep 14
+Loss: Abhi 32.6 Reese 29.3 Nick 20 Parth 14.3 Diego 12.3
+Win: Reese 27 Diego 22.3 Parth 26 Abhi 25.6 Nick 19
+Loss: Seifey 34.3 Josh 20.6 Diep 16.3 Cole 15.6 Dalton 15
+Win: Seifey 30.3 Abhi 26.6 Nick 18.6 Parth 15 Cole 15.6
+Loss: Josh 27.1 Reese 23.6 Darian 14 Mikey 16.6 Bryce 10.6
+Win: Seifey 40.3 Cole 25.6 Parth 21 Nick 19.3 Abhi 16.2
+Loss: Josh 32 Reese 22.6 Bryce 19 Darian 17.3 Mikey 15.6
+Win: Reese 34 Josh 26 Logan 24 Mikey 17 Bryce 12
+Loss: Seifey 27 Parth 20 Darian 20 Abhi 17 Nick 13
+Win: Seifey 30.6 Abhi 22 Gio 21 Nick 19 Darian 15.3
+Loss: Reese 23.3 Josh 21.3 Diep 18.3 Mikey 13 Bryce 6.3
+Tie1: Abhi 42.3 Seifey 37.6 Darian 21.6 Bryce 11 Gio 7.6
+Tie2: Josh 35 Nick 30 Reese 24.3 Mikey 19 Diep 9.6
+Win: Abhi 36.6 Seifey 38 Dalton 13.3 Darian 13 Kyvon 14
+Loss: Reese 30 Josh 22  Nick 18 Mikey 12 Diep 11.6
+Win: Seifey 35.6 Abhi 20.6 Gio 20 Darian 13 Parth 9.6
+Loss: Josh 19.6 Reese 20.3  Nick 20 Dalton 12.3 Mikey 8.6
+Win: Seifey 21 Gio 22.6 Mikey 15.3 Nick 17.6 Parth 10.6
+Loss: Josh 15.3 Dalton 13 Abhi 9.6 Darian 7.3 Diep 4.6
