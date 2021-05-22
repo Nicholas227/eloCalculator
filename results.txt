@@ -20,3 +20,9 @@ Win: Seifey 35.6 Abhi 20.6 Gio 20 Darian 13 Parth 9.6
 Loss: Josh 19.6 Reese 20.3 Nick 20 Dalton 12.3 Mikey 8.6
 Win: Seifey 21 Gio 22.6 Mikey 15.3 Nick 17.6 Parth 10.6
 Loss: Josh 15.3 Dalton 13 Abhi 9.6 Darian 7.3 Diep 4.6
+Win: Josh 36 Gio 35.6 Abhi 26 Mikey 8 Darian 9
+Loss: Seifey 39 Nick 22 Reese 16.6 Diep 10 Kyvon 6.6
+Win: Seifey 29.3 Abhi 21.6 Reese 21.6 Mikey 15 Diep 11.3
+Loss: Gio 20.6 Josh 20.3 Nick 21.6 Kyvon 19 Darian 7.3
+Win: Abhi 28 Reese 23.3 Josh 17 Mikey 17 Darian 10.3
+Loss: Seifey 17.3 Gio 15 Nick 12.3 Diep 8.3 Kyvon 8.6
